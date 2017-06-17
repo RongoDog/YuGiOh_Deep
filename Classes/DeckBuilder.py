@@ -8,13 +8,12 @@ class DeckBuilder(object):
         self.database = database
         self.wantedCoefficients = {}
         self.averageCoefficients()
-        print self.wantedCoefficients
         self.deck = Deck()
         self.buildDeck()
 
     def buildDeck(self):
 
-        nbCardsMax = self.determineAverageNumberOfCards()
+        nbCardsMax = 50
         self.deck.addCard("70781052", self.database)
         tempDeck = self.deck
 
@@ -32,6 +31,7 @@ class DeckBuilder(object):
                     tempDeck = self.deck
 
         self.deck.writeDeck()
+        print self.determineCoefficientDifference(self.deck.determineCoefficients())
 
     def determineAverageNumberOfCards(self):
         totalCards = 0

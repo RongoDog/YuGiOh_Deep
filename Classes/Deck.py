@@ -8,10 +8,13 @@ class Deck(object):
     def __init__(self):
         self.cards = []
         self.types = []
+        self.totalLevel = 0
 
     def addCard2(self, card):
         self.cards.append(card)
         self.determineType(card[Card.TYPE])
+        if card[Card.LEVEL] > 0 or card[Card.LEVEL] < 15:
+            self.incrementLevel(card[Card.LEVEL])
         return
 
     def addCard(self, id, database):
@@ -20,7 +23,13 @@ class Deck(object):
             return False
         self.cards.append(card)
         self.determineType(card[Card.TYPE])
+        if card[Card.LEVEL] > 0 or card[Card.LEVEL] < 15:
+            self.incrementLevel(card[Card.LEVEL])
         return True
+
+    def incrementLevel(self, level):
+        self.totalLevel += level
+        return
 
     def determineType(self, type):
         for currentType in self.types:
@@ -31,10 +40,13 @@ class Deck(object):
         return
 
     def determineCoefficients(self):
-        typeCoefs = {}
+        coefs = {}
         for type in self.types:
-            typeCoefs['%d' % type[Deck.TYPE_IDENTIFIER]] = float(type[Deck.TYPE_COUNT])/len(self.cards)
-        return typeCoefs
+            coefs['%d' % type[Deck.TYPE_IDENTIFIER]] = float(type[Deck.TYPE_COUNT])/len(self.cards)
+
+        coefs["level"] = self.totalLevel
+
+        return coefs
 
     def printDeck(self):
         print "Deck"
